@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EcommerceDB/EcommerceDB.csproj" />
+  <Project Path="EmptyMVC/EmptyMVC.csproj" />
+  <Project Path="Repositories/Repositories.csproj" Id="a5b4e6cd-4479-4bc1-bd2a-981f6eeda5ef" />
+  <Project Path="ViewModel/ViewModel.csproj" Id="aa20df1d-eb78-49e6-b648-9ce915099b95" />
+</Solution>

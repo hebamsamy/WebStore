@@ -1,0 +1,20 @@
+﻿@model ProductDetailsVM
+
+
+<div class="col-md-4">
+    <div class="card h-100">
+        <div class="card-body">
+            @if(Model.Attachments.Count != 0)
+            {
+                <img class="card-img-top" src="@Model.Attachments.First()" />
+            }
+            <h5 class="card-title">@Model.Name</h5>
+            <p class="card-text">@Model.Price $</p>
+            <p class="card-text">@Model.CategoryName </p>
+            <p class="card-text">@Model.Description </p>
+
+            @* <product-status stock="@Model.Stock"></product-status> *@
+            <a class="btn btn-primary" href="/product/details/@Model.ID">Go to Details</a>
+        </div>
+    </div>
+</div>

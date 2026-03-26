@@ -1,0 +1,28 @@
+﻿@model Category;
+
+
+        <h1 class="display-2"> Edit Category</h1>
+        <form method="post" action="/Category/Edit/@Model.ID">
+            <div>
+
+                <label>Name</label>
+                <input class="form-control" type="text" name="Name" id="Name"  value="@Model.Name"/>
+            </div>
+            <div>
+                <label>Description</label>
+                <input class="form-control" type="text" name="Description" id="Description" value="@Model.Description" />
+
+            </div>
+            <input class="btnn" type="submit" value="Updete" />
+        </form>
+
+
+       
+        @section ChildStyle{
+            <style>
+                .btnn{
+                    padding:30px;
+                    color:orangered;
+                }
+            </style>
+        }

@@ -1,0 +1,29 @@
+﻿@model List<Category>;
+
+            <h1 class="display-1">Categories List</h1>
+            <a class="btn btn-primary" href="/Category/Add">Add New Category</a>
+            <table class="table">
+                <thead>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Products Count</th>
+            <th>Actions</th>
+
+            </thead>
+            <tbody>
+                @foreach(var c in Model)
+                {
+                        <tr>
+                        <td>@c.ID</td>
+                        <td>@c.Name</td>
+                        <td>@c.Description</td>
+                        <td>@c.Products.Count</td>
+                        <td><a class="btn btn-danger" href="/category/edit/@c.ID">Edit</a></td>
+
+                        </tr>
+                }
+
+</tbody>
+            </table>
+

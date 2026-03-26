@@ -1,0 +1,25 @@
+﻿@model EcommerceDB.Entites.Product?;
+
+@{
+    var date = TempData.Peek("date");
+}
+
+
+
+<p>Today @date</p>
+
+@if(Model == null){
+    <h1>NO Product Found</h1>
+}
+else
+{
+    <h1>@Model.Name</h1>
+    foreach(var img in Model.Attachments)
+    {
+        <img src="/@img.Path"/>
+    }
+
+}
+
+
+@await Component.InvokeAsync("TopProducts", new { count = 4, type ="sales"})

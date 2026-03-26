@@ -1,0 +1,23 @@
+﻿@model List<ProductDetailsVM>
+
+@{
+    var data = Model;
+}
+
+<h1>Top Product</h1>
+
+
+<div class="row">
+
+
+    @foreach (var prd in Model)
+    {
+
+        @* @Html.Partial("_ProductCardPartial", prd) *@
+
+        <partial name="_ProductCardPartial" model="@prd"></partial>
+
+
+    }
+
+</div>

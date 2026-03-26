@@ -1,0 +1,63 @@
+﻿@model List<ProductDetailsVM>
+@{
+    Layout = "_ClientLayout";
+    var list = ViewData["CategoryList"] as List<EcommerceDB.Entites.Category>;
+    var pageNumber = ViewBag.PageNumber;
+    var date = TempData.Peek("date");
+    bool canmovePrev = pageNumber > 1;
+}
+
+       
+        <h1 class="head">Product List</h1>
+        <h3>Today @date</h3>
+
+        <a class="btn btn-primary" asp-action="add" asp-controller="product" >Add New Product</a>
+
+        <form id="filterform" asp-action="index" asp-controller="product" method="get">
+            <input type="text" name="searchtext" class="form-control" placeholder="Enter Search Text" />
+            <input type="number" name="price" class="form-control" placeholder="Enter min Price to search for" />
+
+        <select class="form-control" name="categoryid">
+            <option value="0">Select Product Category</option>
+                @foreach (var cat in list )
+                {                    
+                    <option style="color:@ViewBag.clr" value="@cat.ID">@cat.Name</option>
+                }
+            </select>
+
+            <input type="submit" value="Filter" class="btn btn-primary" />
+    <input type="hidden" name="pageNumber" id="pageNumber"  value="@pageNumber"/>
+    <input type="hidden" name="pageSize" value="5" />
+        </form>
+    <div class="row">
+            
+
+        @foreach(var prd in Model)
+        {
+                
+            @Html.Partial("_ProductCardPartial",prd)
+        
+
+        }
+
+        </div>
+
+
+<button onclick="goPrev()" disabled="">Prev</button>
+<button onclick="goNext()">Next</button>
+
+@section ChildScript{
+    <script>
+        let input = document.getElementById("pageNumber");
+        let filterform = document.getElementById("filterform")
+        function goPrev(){
+            input.value = parseInt(input.value) - 1;
+            filterform.submit();
+        }
+        function goNext(){
+            input.value =  parseInt(input.value) + 1;
+            filterform.submit();
+        }
+    </script>
+}
+
