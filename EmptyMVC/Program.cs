@@ -29,6 +29,9 @@ namespace EmptyMVC
             builder.Services.AddScoped(typeof(ProductRepository));
             builder.Services.AddScoped(typeof(CategoryRepository));
             builder.Services.AddScoped(typeof(UserRepository));
+            builder.Services.AddScoped(typeof(RoleRepesitoty));
+            builder.Services.AddScoped(typeof(ProviderRepository));
+            builder.Services.AddScoped(typeof(ClientRepository));
 
             //config 
             //services

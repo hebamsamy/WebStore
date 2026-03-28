@@ -12,10 +12,20 @@ namespace Repositories
     {
         UserManager<User> userManager;
         SignInManager<User> signInManager;
-        public UserRepository(EcommerceDBContext dBContext, UserManager<User> _userManager, SignInManager<User> _signInManager) : base(dBContext)
+        ClientRepository ClientRepository;
+        ProviderRepository ProviderRepository;
+        public UserRepository(
+            EcommerceDBContext dBContext, 
+            UserManager<User> _userManager, 
+            SignInManager<User> _signInManager,
+            ClientRepository _ClientRepository,
+        ProviderRepository _ProviderRepository
+            ) : base(dBContext)
         {
             userManager = _userManager;
             signInManager = _signInManager;
+            ClientRepository = _ClientRepository;
+            ProviderRepository = _ProviderRepository;
         }
 
 
@@ -30,6 +40,19 @@ namespace Repositories
             };
 
             IdentityResult res = await userManager.CreateAsync(user,viewModel.Password);
+            //assign role
+            if (res.Succeeded)
+            {
+                var roleres = await userManager.AddToRoleAsync(user,viewModel.Role);
+
+                if(viewModel.Role == "Provider")
+                    ProviderRepository.Add(new Provider { UserId = user.Id, NationalID=user.Id });
+                else if(viewModel.Role == "Client")
+                    ClientRepository.Add(new Client { UserId = user.Id });
+                return roleres;
+            }
+
+
             return res;
         }
 

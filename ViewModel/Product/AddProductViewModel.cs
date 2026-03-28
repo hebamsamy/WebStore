@@ -1,4 +1,5 @@
-﻿using EmptyMVC.Helper.TagHelpers;
+﻿
+using EmptyMVC.Helper.TagHelpers;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,7 +7,7 @@ namespace ViewModel
 {
     public class AddProductViewModel
     {
-        [Required (ErrorMessage ="Must add Product Name")]
+        [Required(ErrorMessage = "Must add Product Name")]
         [MinLength(3)]
         public string Name { get; set; }
         [Required]
@@ -16,11 +17,11 @@ namespace ViewModel
         [Range(1, 100000)]
         public decimal Price { get; set; }
         [Required]
-        [Display(Name ="Aviable Items")]
+        [Display(Name = "Aviable Items")]
         public int Stock { get; set; }
 
 
-        public int ProviderID { get; set; } = 1;
+        public int ProviderID { get; set; } 
         [Required]
         [Display(Name = "Choose Product Catagory")]
         public int CategoryID { get; set; }
@@ -28,7 +29,7 @@ namespace ViewModel
         [Display(Name = "Select Product Image")]
         //[Required(ErrorMessage ="Must Add At least 2 images")]
 
-        [FileLength(Count =2)]
+        [FileLength(Count = 2)]
         public IFormFileCollection Attachment { get; set; }
         public List<string> ImagePaths { get; set; } = new();
 

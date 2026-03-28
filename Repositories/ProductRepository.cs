@@ -60,7 +60,7 @@ namespace Repositories
                 Stock = viewModel.Stock,
                 CategoryID = viewModel.CategoryID,
                 ISDeleted = false,
-                ProviderID = 1,
+                ProviderID = viewModel.ProviderID,
                 Attachments = viewModel.ImagePaths
                     .Select(img => new ProductAttachment { Path = img, }).ToList()
             };

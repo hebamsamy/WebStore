@@ -22,7 +22,7 @@ namespace ViewModel
 
         public string PasswordConfirm { get; set; }
 
-
-        //public string Role { get; set; }
+        [Required]
+        public string Role { get; set; }
     }
 }

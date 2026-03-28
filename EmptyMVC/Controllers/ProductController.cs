@@ -1,21 +1,29 @@
 ﻿using EcommerceDB.Context;
 using EcommerceDB.Entites;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Repositories;
 using ViewModel;
 
 namespace EmptyMVC.Controllers
 {
+    //[Authorize]
     public class ProductController : Controller
     {
         ProductRepository repository;
         CategoryRepository categoryRepository;
-        public ProductController( ProductRepository _repository, CategoryRepository _categoryRepository)
+        ProviderRepository providerRepository;
+        public ProductController( 
+            ProductRepository _repository, 
+            CategoryRepository _categoryRepository,
+            ProviderRepository _providerRepository)
         {
             repository = _repository;
             categoryRepository = _categoryRepository;
+            providerRepository = _providerRepository;   
            
         }
         //product/index?
@@ -63,6 +71,7 @@ namespace EmptyMVC.Controllers
         {
             return View();
         }
+        [Authorize (Roles ="Provider")]
         [HttpGet]
         public IActionResult Add()
         {
@@ -72,8 +81,12 @@ namespace EmptyMVC.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize(Roles = "Provider")]
         public IActionResult Add(AddProductViewModel viewModel)
         {
+            var UserData = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            viewModel.ProviderID = providerRepository.GetOne(p => p.UserId == UserData).ID;
+
             if (ModelState.IsValid)
             {
                 //Save Image
@@ -119,6 +132,22 @@ namespace EmptyMVC.Controllers
                 return View(viewModel);
 
             }
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Provider")]
+        public IActionResult GetMyProduct()
+        {
+            ViewData["CategoryList"] = categoryRepository.GelList().ToList();
+
+            var UserData = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            int CurrentloggedinProvider = providerRepository.GetOne(p => p.UserId == UserData).ID;
+
+            var data = repository.GelList().Where(p => p.ProviderID == CurrentloggedinProvider)
+                .ToProductDetailsVM();
+
+            
+            return View("list", data);
         }
     }
 }

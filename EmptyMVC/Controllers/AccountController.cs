@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Repositories;
 using ViewModel;
 
@@ -7,9 +8,11 @@ namespace EmptyMVC.Controllers
     public class AccountController : Controller
     {
         UserRepository userRepository;
-        public AccountController(UserRepository _userRepository)
+        RoleRepesitoty roleRepesitoty;
+        public AccountController(UserRepository _userRepository,RoleRepesitoty _roleRepesitoty)
         {
             userRepository = _userRepository;
+            roleRepesitoty = _roleRepesitoty;
         }
         /// <summary>
         /// Action /method
@@ -24,6 +27,9 @@ namespace EmptyMVC.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+            ViewData["roles"] = roleRepesitoty
+                .GelList().Where(i => i.NormalizedName != "ADMIN")
+                .Select(i => new SelectListItem(i.Name, i.Name)).ToList();
             return View();
         }
 
@@ -42,20 +48,24 @@ namespace EmptyMVC.Controllers
                     {
                         ModelState.AddModelError("all", item.Description);
                     }
+                    ViewData["roles"] = roleRepesitoty
+                   .GelList().Where(i => i.NormalizedName != "ADMIN")
+                   .Select(i => new SelectListItem(i.Name, i.Name)).ToList();
                     return View(viewModel);
                 }
             }
-
-            
+            ViewData["roles"] = roleRepesitoty
+               .GelList().Where(i => i.NormalizedName != "ADMIN")
+               .Select(i => new SelectListItem(i.Name, i.Name)).ToList();
             return View(viewModel);
         }
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string ReturnUrl = "/")
         {
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Login(UserLoginViewModel viewModel)
+        public async Task<IActionResult> Login(UserLoginViewModel viewModel, string ReturnUrl = "/")
         {
             if (ModelState.IsValid)
             {
@@ -82,10 +92,12 @@ namespace EmptyMVC.Controllers
         {
             return new ContentResult { Content = "Say HIiiiiiii" };
         }
-        //public IActionResult Login(Form Data)
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await userRepository.Logout();
+            return RedirectToAction("login");
+        }
 
 
     }
